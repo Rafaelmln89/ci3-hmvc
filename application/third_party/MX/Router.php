@@ -124,6 +124,15 @@ class MX_Router extends CI_Router
 		/* check modules */
 		foreach (Modules::$locations as $location => $offset)
 		{
+			/* module exists on default applications/controllers? */
+			if( strlen($directory)==0 && strlen($controller)==0 && is_file($location.'../controllers/'.ucfirst($module).'.php'))
+			{
+				$this->module = '';
+				$this->directory = '../controllers/';
+				$this->located = 1;				
+				return array(0 => $module);
+			}
+			
 			/* module exists? */
 			if (is_dir($source = $location.$module.'/controllers/'))
 			{
